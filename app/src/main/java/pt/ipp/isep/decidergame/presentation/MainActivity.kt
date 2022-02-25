@@ -3,6 +3,7 @@ package pt.ipp.isep.decidergame.presentation
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import pt.ipp.isep.decidergame.*
@@ -15,7 +16,7 @@ import pt.ipp.isep.decidergame.presentation.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var textViewDefaultColors: ColorStateList
@@ -49,11 +50,13 @@ class MainActivity : AppCompatActivity() {
                 disableOpButtons()
             }
         }
-        viewModel.activeLD.observe(this) {
-            if (it) {
+        viewModel.gameStateLD.observe(this) {
+            if (it == GAME_STARTED) {
                 binding.btnStart.text = getString(R.string.stop_game)
             } else {
                 binding.btnStart.text = getString(R.string.start_game)
+                // TODO: verify game over (dialog)
+                Log.d("MainActivity", viewModel.gameTime().toString())
             }
         }
 

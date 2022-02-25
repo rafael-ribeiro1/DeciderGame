@@ -9,12 +9,12 @@ import pt.ipp.isep.decidergame.INITIAL_VALUE
 import pt.ipp.isep.decidergame.LEFT_BUTTON
 import pt.ipp.isep.decidergame.MOVE_TIMER_INTERVAL
 import pt.ipp.isep.decidergame.MOVE_TIMER_TIMEOUT
-import pt.ipp.isep.decidergame.RIGHT_BUTTON
 import pt.ipp.isep.decidergame.data.model.Calculus
 import pt.ipp.isep.decidergame.data.model.generatePair
 
 class MainViewModel: ViewModel() {
 
+    /* GAME DATA */
     private val _scoreLD = MutableLiveData(INITIAL_VALUE)
     val scoreLD: LiveData<Int> = _scoreLD
 
@@ -25,14 +25,20 @@ class MainViewModel: ViewModel() {
     private val _calculusPairLD = MutableLiveData<Pair<Calculus, Calculus>>()
     val calculusPairLD: LiveData<Pair<Calculus, Calculus>> = _calculusPairLD
 
-    private var gameStartTime: Long? = null
+    private val _gameStateLD = MutableLiveData(GAME_STOPPED)
+    val gameStateLD: LiveData<Int> = _gameStateLD
+    /* GAME DATA - END */
 
-    private val _activeLD = MutableLiveData(false)
-    val activeLD: LiveData<Boolean> = _activeLD
-    private var isGameActive = false
+    /* GAME RESULTS */
+    private var gameStartTime: Long = System.currentTimeMillis()
+    private var gameTime: Long? = null
+    fun gameTime() = gameTime
+
+    // TODO: Implement score peak and number of moves
+    /* GAME RESULT - END */
 
     fun startOrStopGame() {
-        if (activeLD.value ?: return) {
+        if (gameStateLD.value == GAME_STARTED) {
             stopGame()
         } else {
             startGame()
@@ -44,11 +50,11 @@ class MainViewModel: ViewModel() {
         gameStartTime = System.currentTimeMillis()
         _scoreLD.postValue(INITIAL_VALUE)
         startMoveTimer(MOVE_TIMER_TIMEOUT_INI)
-        _activeLD.postValue(true)
+        _gameStateLD.postValue(GAME_STARTED)
     }
 
     private fun stopGame() {
-        _activeLD.postValue(false)
+        _gameStateLD.postValue(GAME_STOPPED)
         moveTimer?.cancel()
         _moveTimerLD.postValue(0)
         _scoreLD.postValue(INITIAL_VALUE)
@@ -58,9 +64,21 @@ class MainViewModel: ViewModel() {
         val score = scoreLD.value ?: return
         val calculus = if (button == LEFT_BUTTON) calculusPairLD.value?.first else calculusPairLD.value?.second
         val newScore = calculus?.calculate(score) ?: return
+        if (newScore <= SCORE_BOTTOM_LIMIT) {
+            _scoreLD.postValue(SCORE_BOTTOM_LIMIT)
+            gameOver()
+            return
+        }
         _scoreLD.postValue(newScore)
         _calculusPairLD.postValue(generatePair())
         startMoveTimer(MOVE_TIMER_TIMEOUT)
+    }
+
+    private fun gameOver() {
+        moveTimer?.cancel()
+        _moveTimerLD.postValue(0)
+        _gameStateLD.postValue(GAME_OVER)
+        gameTime = System.currentTimeMillis() - gameStartTime
     }
 
     private fun startMoveTimer(time: Long) {
@@ -70,9 +88,7 @@ class MainViewModel: ViewModel() {
                 _moveTimerLD.postValue(p0)
             }
             override fun onFinish() {
-                _moveTimerLD.postValue(0)
-                _activeLD.postValue(false)
-                // TODO: GameOver
+                gameOver()
             }
         }
         moveTimer?.start()
