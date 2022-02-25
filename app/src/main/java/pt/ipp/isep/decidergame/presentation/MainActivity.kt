@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import pt.ipp.isep.decidergame.INITIAL_VALUE
-import pt.ipp.isep.decidergame.R
+import pt.ipp.isep.decidergame.*
+import pt.ipp.isep.decidergame.LEFT_BUTTON
+import pt.ipp.isep.decidergame.RIGHT_BUTTON
 import pt.ipp.isep.decidergame.data.model.Calculus
 import pt.ipp.isep.decidergame.data.model.Operation
 import pt.ipp.isep.decidergame.databinding.ActivityMainBinding
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             enableOpButtons(it.first, it.second)
         }
         viewModel.moveTimerLD.observe(this) {
-            if (it != 0L) {
+            if (it > 0L) {
                 binding.tvTimeLeft.text = String.format("%.1fs", it / 1000.0)
                 if (it < 1500L) {
                     binding.tvTimeLeft.setTextColor(ContextCompat.getColor(applicationContext, R.color.warning_red))
@@ -45,13 +46,23 @@ class MainActivity : AppCompatActivity() {
                 }
             } else {
                 binding.tvTimeLeft.text = null
+                disableOpButtons()
+            }
+        }
+        viewModel.activeLD.observe(this) {
+            if (it) {
+                binding.btnStart.text = getString(R.string.stop_game)
+            } else {
+                binding.btnStart.text = getString(R.string.start_game)
             }
         }
 
         binding.btnStart.setOnClickListener {
-            viewModel.startGame()
-            // TODO: Stop Game button
+            viewModel.startOrStopGame()
         }
+
+        binding.btnLeft.setOnClickListener { viewModel.chooseOption(LEFT_BUTTON) }
+        binding.btnRight.setOnClickListener { viewModel.chooseOption(RIGHT_BUTTON) }
     }
 
     private fun disableOpButtons() {
