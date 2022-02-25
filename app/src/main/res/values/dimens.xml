@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="btn_height">150dp</dimen>
+    <dimen name="btn_margin">15dp</dimen>
+    <dimen name="time_left_text_size">23sp</dimen>
+    <dimen name="score_margin">100dp</dimen>
+    <dimen name="score_text_size">120sp</dimen>
+    <dimen name="operation_text_size">30sp</dimen>
+</resources>

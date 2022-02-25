@@ -6,13 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".presentation.MainActivity">
 
+    <Button
+        android:id="@+id/btn_left"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginStart="@dimen/btn_margin"
+        android:layout_marginBottom="@dimen/btn_margin"
+        android:textSize="@dimen/operation_text_size"
+        tools:text="÷5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.45"/>
+
+    <Button
+        android:id="@+id/btn_right"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginEnd="@dimen/btn_margin"
+        android:layout_marginBottom="@dimen/btn_margin"
+        android:textSize="@dimen/operation_text_size"
+        tools:text="+5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.45"/>
+
+    <TextView
+        android:id="@+id/tv_time_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/btn_margin"
+        tools:text="3s"
+        android:textSize="@dimen/time_left_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/btn_right"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/score_margin"
+        android:textSize="@dimen/score_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/tv_time_left"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="10" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/score_hint"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_score"
+        app:layout_constraintStart_toStartOf="@+id/tv_score" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/btn_margin"
+        android:text="@string/start_game"
+        android:backgroundTint="@color/purple_400"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
