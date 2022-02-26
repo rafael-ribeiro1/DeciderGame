@@ -72,7 +72,7 @@ class MainViewModel: ViewModel() {
         val newScore = calculus?.calculate(score) ?: return
         if (!checkScore(newScore)) { return }
         numMoves++
-        if (newScore > score) { scorePeak = newScore }
+        if (newScore > scorePeak) { scorePeak = newScore }
         _scoreLD.postValue(newScore)
         _calculusPairLD.postValue(generatePair())
         startMoveTimer(MOVE_TIMER_TIMEOUT)
