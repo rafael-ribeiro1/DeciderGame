@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 binding.btnStart.text = getString(R.string.start_game)
                 // TODO: verify game over (dialog)
-                Log.d("MainActivity", viewModel.gameTime().toString())
+                Log.d("MainActivity", "${viewModel.gameTime().toString()} - ${viewModel.scorePeak()} - ${viewModel.numMoves()}")
             }
         }
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import pt.ipp.isep.decidergame.*
-import pt.ipp.isep.decidergame.INITIAL_VALUE
+import pt.ipp.isep.decidergame.INITIAL_SCORE
 import pt.ipp.isep.decidergame.LEFT_BUTTON
 import pt.ipp.isep.decidergame.MOVE_TIMER_INTERVAL
 import pt.ipp.isep.decidergame.MOVE_TIMER_TIMEOUT
@@ -15,7 +15,7 @@ import pt.ipp.isep.decidergame.data.model.generatePair
 class MainViewModel: ViewModel() {
 
     /* GAME DATA */
-    private val _scoreLD = MutableLiveData(INITIAL_VALUE)
+    private val _scoreLD = MutableLiveData(INITIAL_SCORE)
     val scoreLD: LiveData<Int> = _scoreLD
 
     private var moveTimer: CountDownTimer? = null
@@ -34,7 +34,11 @@ class MainViewModel: ViewModel() {
     private var gameTime: Long? = null
     fun gameTime() = gameTime
 
-    // TODO: Implement score peak and number of moves
+    private var scorePeak: Int = INITIAL_SCORE
+    fun scorePeak() = scorePeak
+
+    private var numMoves: Int = INITIAL_NUM_MOVES
+    fun numMoves() = numMoves
     /* GAME RESULT - END */
 
     fun startOrStopGame() {
@@ -48,27 +52,27 @@ class MainViewModel: ViewModel() {
     private fun startGame() {
         _calculusPairLD.postValue(generatePair())
         gameStartTime = System.currentTimeMillis()
-        _scoreLD.postValue(INITIAL_VALUE)
+        _scoreLD.postValue(INITIAL_SCORE)
         startMoveTimer(MOVE_TIMER_TIMEOUT_INI)
         _gameStateLD.postValue(GAME_STARTED)
+        scorePeak = INITIAL_SCORE
+        numMoves = INITIAL_NUM_MOVES
     }
 
     private fun stopGame() {
         _gameStateLD.postValue(GAME_STOPPED)
         moveTimer?.cancel()
         _moveTimerLD.postValue(0)
-        _scoreLD.postValue(INITIAL_VALUE)
+        _scoreLD.postValue(INITIAL_SCORE)
     }
 
     fun chooseOption(button: Int) {
         val score = scoreLD.value ?: return
         val calculus = if (button == LEFT_BUTTON) calculusPairLD.value?.first else calculusPairLD.value?.second
         val newScore = calculus?.calculate(score) ?: return
-        if (newScore <= SCORE_BOTTOM_LIMIT) {
-            _scoreLD.postValue(SCORE_BOTTOM_LIMIT)
-            gameOver()
-            return
-        }
+        if (!checkScore(newScore)) { return }
+        numMoves++
+        if (newScore > score) { scorePeak = newScore }
         _scoreLD.postValue(newScore)
         _calculusPairLD.postValue(generatePair())
         startMoveTimer(MOVE_TIMER_TIMEOUT)
@@ -79,6 +83,20 @@ class MainViewModel: ViewModel() {
         _moveTimerLD.postValue(0)
         _gameStateLD.postValue(GAME_OVER)
         gameTime = System.currentTimeMillis() - gameStartTime
+    }
+
+    private fun checkScore(newScore: Int): Boolean {
+        if (newScore <= SCORE_BOTTOM_LIMIT) {
+            _scoreLD.postValue(SCORE_BOTTOM_LIMIT)
+            gameOver()
+            return false
+        }
+        if (newScore > SCORE_TOP_LIMIT) {
+            _scoreLD.postValue(newScore)
+            gameOver()
+            return false
+        }
+        return true
     }
 
     private fun startMoveTimer(time: Long) {
