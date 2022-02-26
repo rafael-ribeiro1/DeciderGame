@@ -12,6 +12,7 @@ import pt.ipp.isep.decidergame.RIGHT_BUTTON
 import pt.ipp.isep.decidergame.data.model.Calculus
 import pt.ipp.isep.decidergame.data.model.Operation
 import pt.ipp.isep.decidergame.databinding.ActivityMainBinding
+import pt.ipp.isep.decidergame.presentation.dialog.GameOverDialogFragment
 import pt.ipp.isep.decidergame.presentation.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -55,8 +56,7 @@ class MainActivity : AppCompatActivity() {
                 binding.btnStart.text = getString(R.string.stop_game)
             } else {
                 binding.btnStart.text = getString(R.string.start_game)
-                // TODO: verify game over (dialog)
-                Log.d("MainActivity", "${viewModel.gameTime().toString()} - ${viewModel.scorePeak()} - ${viewModel.numMoves()}")
+                if (it == GAME_OVER) { showGameResults() }
             }
         }
 
@@ -80,5 +80,14 @@ class MainActivity : AppCompatActivity() {
         binding.btnRight.isClickable = true
         binding.btnLeft.text = op1.toString()
         binding.btnRight.text = op2.toString()
+    }
+
+    private fun showGameResults() {
+        val gameTime = viewModel.gameTime() ?: return
+        val numMoves = viewModel.numMoves()
+        if (numMoves == 0) { return }
+        val scorePeak = viewModel.scorePeak()
+        val dialog = GameOverDialogFragment(gameTime, numMoves, scorePeak)
+        dialog.show(supportFragmentManager, DIALOG_GAME_OVER_TAG)
     }
 }

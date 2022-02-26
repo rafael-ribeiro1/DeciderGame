@@ -15,3 +15,5 @@ internal const val RIGHT_BUTTON = 2
 internal const val GAME_STARTED = 1
 internal const val GAME_STOPPED = 2
 internal const val GAME_OVER = 3
+
+internal const val DIALOG_GAME_OVER_TAG = "GameOver"

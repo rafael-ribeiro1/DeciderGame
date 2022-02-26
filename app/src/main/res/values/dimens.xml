@@ -6,4 +6,9 @@
     <dimen name="score_margin">100dp</dimen>
     <dimen name="score_text_size">120sp</dimen>
     <dimen name="operation_text_size">30sp</dimen>
+    <dimen name="header_gameover">30sp</dimen>
+    <dimen name="tv_result_margin">15dp</dimen>
+    <dimen name="tv_result_text_size">20sp</dimen>
+    <dimen name="tv_result_text_margin">8dp</dimen>
+    <dimen name="tv_result_handler_text_size">17sp</dimen>
 </resources>
