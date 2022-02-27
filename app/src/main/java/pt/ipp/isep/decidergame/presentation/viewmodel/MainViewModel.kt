@@ -1,9 +1,8 @@
 package pt.ipp.isep.decidergame.presentation.viewmodel
 
 import android.os.CountDownTimer
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
 import pt.ipp.isep.decidergame.*
 import pt.ipp.isep.decidergame.INITIAL_SCORE
 import pt.ipp.isep.decidergame.LEFT_BUTTON
@@ -11,8 +10,10 @@ import pt.ipp.isep.decidergame.MOVE_TIMER_INTERVAL
 import pt.ipp.isep.decidergame.MOVE_TIMER_TIMEOUT
 import pt.ipp.isep.decidergame.data.model.Calculus
 import pt.ipp.isep.decidergame.data.model.generatePair
+import pt.ipp.isep.decidergame.data.persistence.model.Record
+import pt.ipp.isep.decidergame.data.persistence.repository.RecordRepository
 
-class MainViewModel: ViewModel() {
+class MainViewModel(private val repository: RecordRepository) : ViewModel() {
 
     /* GAME DATA */
     private val _scoreLD = MutableLiveData(INITIAL_SCORE)
@@ -78,13 +79,6 @@ class MainViewModel: ViewModel() {
         startMoveTimer(MOVE_TIMER_TIMEOUT)
     }
 
-    private fun gameOver() {
-        moveTimer?.cancel()
-        _moveTimerLD.postValue(0)
-        _gameStateLD.postValue(GAME_OVER)
-        gameTime = System.currentTimeMillis() - gameStartTime
-    }
-
     private fun checkScore(newScore: Int): Boolean {
         if (newScore <= SCORE_BOTTOM_LIMIT) {
             _scoreLD.postValue(SCORE_BOTTOM_LIMIT)
@@ -97,6 +91,26 @@ class MainViewModel: ViewModel() {
             return false
         }
         return true
+    }
+
+    private fun gameOver() {
+        moveTimer?.cancel()
+        _moveTimerLD.postValue(0)
+        _gameStateLD.postValue(GAME_OVER)
+        gameTime = System.currentTimeMillis() - gameStartTime
+        saveResults()
+    }
+
+    private fun saveResults() {
+        if (numMoves == 0) return
+        val gTime = gameTime ?: return
+        val record = Record(
+            System.currentTimeMillis(),
+            gTime,
+            numMoves,
+            scorePeak
+        )
+        viewModelScope.launch { repository.insert(record) }
     }
 
     private fun startMoveTimer(time: Long) {
@@ -112,4 +126,14 @@ class MainViewModel: ViewModel() {
         moveTimer?.start()
     }
 
+}
+
+class MainViewModelFactory(private val repository: RecordRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return MainViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

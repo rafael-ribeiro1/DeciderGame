@@ -6,9 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "Record")
 data class Record (
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    @ColumnInfo(name = "datetime")
+    @PrimaryKey(autoGenerate = false)
     val datetime: Long,
     @ColumnInfo(name = "game_time")
     val gameTime: Long,

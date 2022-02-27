@@ -33,8 +33,6 @@ abstract class AppDatabase : RoomDatabase() {
                 instance
             }
         }
-
-        val databaseWriterExecutor: ExecutorService = Executors.newFixedThreadPool(2)
     }
 
 }

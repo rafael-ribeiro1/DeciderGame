@@ -14,10 +14,13 @@ import pt.ipp.isep.decidergame.data.model.Operation
 import pt.ipp.isep.decidergame.databinding.ActivityMainBinding
 import pt.ipp.isep.decidergame.presentation.dialog.GameOverDialogFragment
 import pt.ipp.isep.decidergame.presentation.viewmodel.MainViewModel
+import pt.ipp.isep.decidergame.presentation.viewmodel.MainViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels {
+        MainViewModelFactory((application as DeciderApplication).recordRepository)
+    }
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var textViewDefaultColors: ColorStateList
