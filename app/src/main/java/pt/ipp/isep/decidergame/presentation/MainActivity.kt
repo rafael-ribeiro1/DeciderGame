@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -15,7 +14,7 @@ import pt.ipp.isep.decidergame.RIGHT_BUTTON
 import pt.ipp.isep.decidergame.data.model.Calculus
 import pt.ipp.isep.decidergame.data.model.Operation
 import pt.ipp.isep.decidergame.databinding.ActivityMainBinding
-import pt.ipp.isep.decidergame.presentation.dialog.GameOverDialogFragment
+import pt.ipp.isep.decidergame.presentation.dialog.GameResultsDialogFragment
 import pt.ipp.isep.decidergame.presentation.viewmodel.MainViewModel
 import pt.ipp.isep.decidergame.presentation.viewmodel.MainViewModelFactory
 
@@ -93,8 +92,8 @@ class MainActivity : AppCompatActivity() {
         val numMoves = viewModel.numMoves()
         if (numMoves == 0) { return }
         val scorePeak = viewModel.scorePeak()
-        val dialog = GameOverDialogFragment(gameTime, numMoves, scorePeak)
-        dialog.show(supportFragmentManager, DIALOG_GAME_OVER_TAG)
+        val dialog = GameResultsDialogFragment(getString(R.string.game_over), gameTime, numMoves, scorePeak)
+        dialog.show(supportFragmentManager, DIALOG_GAME_RES_TAG)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

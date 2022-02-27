@@ -12,7 +12,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import pt.ipp.isep.decidergame.R
 
-class GameOverDialogFragment(
+class GameResultsDialogFragment(
+    private val header: String,
     private val gameTime: Long,
     private val numMoves: Int,
     private val scorePeak: Int
@@ -34,6 +35,7 @@ class GameOverDialogFragment(
     }
 
     private fun bindInfo(view: View) : View {
+        view.findViewById<TextView>(R.id.tv_header).text = header
         view.findViewById<TextView>(R.id.tv_game_time).text = String.format("%.1f", gameTime / 1000.0)
         view.findViewById<TextView>(R.id.tv_num_moves).text = "$numMoves"
         view.findViewById<TextView>(R.id.tv_score_peak).text = "$scorePeak"

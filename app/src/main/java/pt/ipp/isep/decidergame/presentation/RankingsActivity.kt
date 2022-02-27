@@ -8,10 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import pt.ipp.isep.decidergame.*
 import pt.ipp.isep.decidergame.RANKING_GAME_TIME
 import pt.ipp.isep.decidergame.RANKING_NUM_MOVES
+import pt.ipp.isep.decidergame.data.persistence.model.Record
 import pt.ipp.isep.decidergame.databinding.ActivityRankingsBinding
 import pt.ipp.isep.decidergame.presentation.adapter.RankingAdapter
+import pt.ipp.isep.decidergame.presentation.dialog.GameResultsDialogFragment
 import pt.ipp.isep.decidergame.presentation.viewmodel.RankingsViewModel
 import pt.ipp.isep.decidergame.presentation.viewmodel.RankingsViewModelFactory
+import java.text.DateFormat
+import java.util.*
 
 class RankingsActivity : AppCompatActivity() {
 
@@ -32,7 +36,9 @@ class RankingsActivity : AppCompatActivity() {
         binding.rankingList.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(applicationContext)
-            adapter = RankingAdapter(RANKING_GAME_TIME)
+            adapter = RankingAdapter(RANKING_GAME_TIME) {
+                showGameResults(it)
+            }
         }
 
         viewModel.rankingLD.observe(this) {
@@ -66,7 +72,12 @@ class RankingsActivity : AppCompatActivity() {
         }
     }
 
-
+    private fun showGameResults(record: Record) {
+        val formatter = DateFormat.getDateTimeInstance()
+        val dialog = GameResultsDialogFragment(formatter.format(Date(record.datetime)),
+            record.gameTime, record.numMoves, record.scorePeak)
+        dialog.show(supportFragmentManager, DIALOG_GAME_RES_TAG)
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

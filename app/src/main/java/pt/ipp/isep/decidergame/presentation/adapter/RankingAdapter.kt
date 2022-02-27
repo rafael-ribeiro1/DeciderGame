@@ -13,7 +13,7 @@ import pt.ipp.isep.decidergame.databinding.ItemRankingBinding
 import java.text.DateFormat
 import java.util.*
 
-class RankingAdapter (var rankingType: Int = RANKING_GAME_TIME) :
+class RankingAdapter (var rankingType: Int = RANKING_GAME_TIME, private val onClick: (Record) -> Unit) :
     ListAdapter<Record, RankingAdapter.RankingViewHolder>(DiffCallback()) {
 
     inner class RankingViewHolder(private val binding: ItemRankingBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -26,6 +26,8 @@ class RankingAdapter (var rankingType: Int = RANKING_GAME_TIME) :
                 RANKING_SCORE_PEAK -> "${record.scorePeak}"
                 else -> { return }
             }
+
+            binding.root.setOnClickListener { onClick(record) }
         }
     }
 
