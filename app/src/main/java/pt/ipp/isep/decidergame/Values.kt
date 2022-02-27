@@ -17,3 +17,7 @@ internal const val GAME_STOPPED = 2
 internal const val GAME_OVER = 3
 
 internal const val DIALOG_GAME_OVER_TAG = "GameOver"
+
+internal const val RANKING_GAME_TIME = 1
+internal const val RANKING_NUM_MOVES = 2
+internal const val RANKING_SCORE_PEAK = 3

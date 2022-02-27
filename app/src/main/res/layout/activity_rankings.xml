@@ -5,10 +5,11 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/tv_order_by"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/tv_result_margin"
         android:layout_marginStart="@dimen/tv_result_margin"
+        android:layout_marginTop="@dimen/tv_result_margin"
         android:text="@string/order_by"
         android:textSize="@dimen/tv_result_handler_text_size"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,35 +19,36 @@
         android:id="@+id/toggle_btn_ranking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/btn_ranking_margin_top"
         android:layout_marginEnd="@dimen/btn_ranking_margin_end"
-        app:singleSelection="true"
-        app:selectionRequired="true"
         app:checkedButton="@id/btn_ranking_game_time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_by"
+        app:selectionRequired="true"
+        app:singleSelection="true">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_ranking_game_time"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/game_time"
-            android:textSize="@dimen/btn_ranking_text_size"
-            style="?attr/materialButtonOutlinedStyle"/>
+            android:textSize="@dimen/btn_ranking_text_size" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_ranking_num_moves"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/num_moves"
-            android:textSize="@dimen/btn_ranking_text_size"
-            style="?attr/materialButtonOutlinedStyle"/>
+            android:textSize="@dimen/btn_ranking_text_size" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_ranking_score_peak"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/score_peak"
-            android:textSize="@dimen/btn_ranking_text_size"
-            style="?attr/materialButtonOutlinedStyle"/>
+            android:textSize="@dimen/btn_ranking_text_size" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -16,4 +16,8 @@
     <dimen name="btn_ranking_margin_end">10dp</dimen>
     <dimen name="btn_ranking_text_size">10sp</dimen>
     <dimen name="ranking_list_margin">10dp</dimen>
+    <dimen name="item_ranking_margin_horizontal">15dp</dimen>
+    <dimen name="item_ranking_margin_vertical">8dp</dimen>
+    <dimen name="item_divider_margin_vertical">1dp</dimen>
+    <dimen name="item_divider_margin_horizontal">12dp</dimen>
 </resources>
