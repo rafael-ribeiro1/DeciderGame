@@ -1,9 +1,12 @@
 package pt.ipp.isep.decidergame.presentation
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import pt.ipp.isep.decidergame.*
@@ -32,8 +35,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         textViewDefaultColors = binding.tvTimeLeft.textColors
-
-        disableOpButtons()
 
         viewModel.scoreLD.observe(this) {
             binding.tvScore.text = it.toString()
@@ -69,6 +70,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnLeft.setOnClickListener { viewModel.chooseOption(LEFT_BUTTON) }
         binding.btnRight.setOnClickListener { viewModel.chooseOption(RIGHT_BUTTON) }
+
+        disableOpButtons()
     }
 
     private fun disableOpButtons() {
@@ -92,5 +95,22 @@ class MainActivity : AppCompatActivity() {
         val scorePeak = viewModel.scorePeak()
         val dialog = GameOverDialogFragment(gameTime, numMoves, scorePeak)
         dialog.show(supportFragmentManager, DIALOG_GAME_OVER_TAG)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.ranking_menu_item -> openRankingActivity()
+        }
+        return true
+    }
+
+    private fun openRankingActivity() {
+        val intent = Intent(this, RankingsActivity::class.java)
+        startActivity(intent)
     }
 }

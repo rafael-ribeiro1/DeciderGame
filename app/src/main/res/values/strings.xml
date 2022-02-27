@@ -8,4 +8,8 @@
     <string name="moves">moves</string>
     <string name="score_peak">score peak</string>
     <string name="close">Close</string>
+    <string name="order_by">Order by</string>
+    <string name="game_time">Game Time</string>
+    <string name="num_moves">Num Moves</string>
+    <string name="ranking">Ranking</string>
 </resources>
