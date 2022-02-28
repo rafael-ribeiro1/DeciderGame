@@ -32,14 +32,14 @@ class MainViewModel(private val repository: RecordRepository) : ViewModel() {
 
     /* GAME RESULTS */
     private var gameStartTime: Long = System.currentTimeMillis()
-    private var gameTime: Long? = null
-    fun gameTime() = gameTime
+    var gameTime: Long? = null
+        private set
 
-    private var scorePeak: Int = INITIAL_SCORE
-    fun scorePeak() = scorePeak
+    var scorePeak: Int = INITIAL_SCORE
+        private set
 
-    private var numMoves: Int = INITIAL_NUM_MOVES
-    fun numMoves() = numMoves
+    var numMoves: Int = INITIAL_NUM_MOVES
+        private set
     /* GAME RESULT - END */
 
     fun startOrStopGame() {

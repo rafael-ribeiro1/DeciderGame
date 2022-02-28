@@ -88,10 +88,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showGameResults() {
-        val gameTime = viewModel.gameTime() ?: return
-        val numMoves = viewModel.numMoves()
+        val gameTime = viewModel.gameTime ?: return
+        val numMoves = viewModel.numMoves
         if (numMoves == 0) { return }
-        val scorePeak = viewModel.scorePeak()
+        val scorePeak = viewModel.scorePeak
         val dialog = GameResultsDialogFragment(getString(R.string.game_over), gameTime, numMoves, scorePeak)
         dialog.show(supportFragmentManager, DIALOG_GAME_RES_TAG)
     }
