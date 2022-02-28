@@ -33,6 +33,14 @@ android {
     viewBinding {
         enabled = true
     }
+    sourceSets {
+        androidTest {
+            java.srcDirs += "src/commonTest/java"
+        }
+        test {
+            java.srcDirs += "src/commonTest/java"
+        }
+    }
 }
 
 dependencies {
@@ -53,6 +61,11 @@ dependencies {
 
     testImplementation 'junit:junit:4.+'
     testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
+    testImplementation 'org.mockito:mockito-inline:4.3.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    def arch_core_version = "2.1.0"
+    testImplementation "androidx.arch.core:core-testing:$arch_core_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$arch_core_version"
+    testImplementation 'org.robolectric:robolectric:4.7.3'
 }
